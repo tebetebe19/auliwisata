@@ -1,0 +1,34 @@
+{
+    "records": [
+        {
+            "id": "rec4aV4aIYYgFPYqw",
+            "title": "Lokasi 2 - Lokasi 3 (Mampir)",
+            "code": "D2 Muharam"
+        },
+        {
+            "id": "recJiye8hDgFpZwkj",
+            "createdTime": "2024-04-05T10:28:53.000Z",
+            "title": "Lokasi 1 - Lokasi 2 (Terbang dan Transit))",
+            "code": "D1 Muharam",
+            "airlinesName": [
+                "Emirates",
+                "Emirates"
+            ]
+        },
+        {
+            "id": "recMRk5y4nrRIZxWA",
+            "createdTime": "2024-04-05T16:30:51.000Z",
+            "title": "Lokasi 4 - Lokasi 1 (Pulang gais)",
+            "code": "D4 Muharam",
+            "airlinesName": [
+                "Emirates"
+            ]
+        },
+        {
+            "id": "recMngGP8htWxukVd",
+            "createdTime": "2024-04-05T10:28:53.000Z",
+            "title": "Lokasi 3 - Lokasi 4 (Gabut)",
+            "code": "D3 Muharam"
+        }
+    ]
+}
