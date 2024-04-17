@@ -70,7 +70,7 @@ class ProductsController extends Controller
             ];
         }, $products);
 
-        dd($products);
+        // dd($products);
 
         return response($products);
     }
