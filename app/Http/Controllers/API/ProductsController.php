@@ -44,31 +44,33 @@ class ProductsController extends Controller
 
             // Mapping itinerary
             $itineraryIds = $products['fields']['itineraries'];
-            $itinerariesMapped = [];
+            $itinsMapped = [];
             foreach ($itineraryIds as $itineraryId) {
                 $record = collect($itins)->firstWhere('id', $itineraryId);
                 if ($record) {
-                    $itinerariesMapped[] = $record;
+                    $itinsMapped[] = $record;
                 }
             }
 
-            // dd($itinerariesMapped);
+            // dd($itinsMapped);
 
-            // Convert price to thousand
-            $priceNormal = number_format($products['fields']['price_normal'], 0, ',', '.'); // Tambah response harga pakai separator ribuan
-            $priceDiscount = number_format($products['fields']['price_discount'], 0, ',', '.');
+            $priceNormal = number_format($products['fields']['price_normal'], 0, ',', '.');
+            $priceDiscount = isset($products['fields']['price_discount']) ? number_format($products['fields']['price_discount'], 0, ',', '.') : null;
+            // $testdulukale = $itins['meal'];
 
             return [
+                'id' => $products['id'],
                 'name' => $products['fields']['name'],
                 'thumbnail' => $products['fields']['thumbnail'][0]['url'],
                 'price_normal' => $priceNormal,
                 'price_discount' => $priceDiscount,
                 'duration' => $duration,
-                'itineraries' => $itinerariesMapped,
+                'itineraries' => $itinsMapped,
+                'firstFlight' => $itinsMapped[1]['description'],
             ];
         }, $products);
 
-        // dd($products);
+        dd($products);
 
         return response($products);
     }
