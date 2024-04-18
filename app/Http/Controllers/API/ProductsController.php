@@ -52,25 +52,21 @@ class ProductsController extends Controller
                 }
             }
 
-            // dd($itinsMapped);
-
             $priceNormal = number_format($products['fields']['price_normal'], 0, ',', '.');
             $priceDiscount = isset($products['fields']['price_discount']) ? number_format($products['fields']['price_discount'], 0, ',', '.') : null;
             // $testdulukale = $itins['meal'];
 
             return [
                 'id' => $products['id'],
+                'slug' => $products['fields']['slug'],
                 'name' => $products['fields']['name'],
                 'thumbnail' => $products['fields']['thumbnail'][0]['url'],
                 'price_normal' => $priceNormal,
                 'price_discount' => $priceDiscount,
                 'duration' => $duration,
                 'itineraries' => $itinsMapped,
-                'firstFlight' => $itinsMapped[1]['description'],
             ];
         }, $products);
-
-        // dd($products);
 
         return response($products);
     }
