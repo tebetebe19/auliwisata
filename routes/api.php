@@ -1,9 +1,10 @@
 <?php
 
+use App\Http\Controllers\API\ProductsController;
+use App\Http\Controllers\API\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\API\ProductsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,4 +19,6 @@ use App\Http\Controllers\API\ProductsController;
 
 Route::group(['prefix' => 'v1'], function () {
     Route::get('products', [ProductsController::class, 'index']);
+    Route::get('product/{slug?}', [ProductController::class, 'index']);
+    // Route::get('product/{slug?}', [ProductController::class, 'index']);
 });

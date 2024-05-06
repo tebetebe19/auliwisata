@@ -7,66 +7,35 @@ use Illuminate\Support\Facades\Http;
 
 class ProductsController extends Controller
 {
-    public function index()
+    public function index($slug = null)
     {
         $apiKey = env('AIRTABLE_KEY');
         $baseId = env('AIRTABLE_BASE_ID');
         $tableIDproducts = env('AIRTABLE_TABLE_ID_PRODUCTS');
         $tableIDitineraries = env('AIRTABLE_TABLE_ID_ITINERARIES');
 
-        // Fetch table product
         $responseProducts = Http::withHeaders([
-            'Authorization' => 'Bearer '.$apiKey,
-        ])->get('https://api.airtable.com/v0/'.$baseId.'/'.$tableIDproducts.'');
+                    'Authorization' => 'Bearer '.$apiKey,
+                ])->get('https://api.airtable.com/v0/'.$baseId.'/'.$tableIDproducts.'');
         $products = json_decode($responseProducts, true)['records'];
-
-        // Fetch table and transform itineraries
-        $respItins = Http::withHeaders([
-            'Authorization' => 'Bearer '.$apiKey,
-        ])->get('https://api.airtable.com/v0/'.$baseId.'/'.$tableIDitineraries.'');
-        $itins = json_decode($respItins, true)['records'];
-        foreach ($itins as $itin) {
-            $transitin = [
-                'id' => $itin['id'],
-                'title' => $itin['fields']['title'],
-                'meal' => $itin['fields']['meal'],
-                'description' => $itin['fields']['description'],
-                'airlines' => isset($itin['fields']['airlinesName']) ? $itin['fields']['airlinesName'] : null,
+        // dd($products);
+        foreach ($products as $prd) {
+            $transprd = [
+                'id' => $prd['id'],
+                'slug' => $prd['fields']['slug'],
+                'thumbnail' => $prd['fields']['thumbnail'][0]['thumbnails']['full']['url'],
+                'name' => $prd['fields']['name'],
+                'price_normal' => $prd['fields']['price_normal'],
+                'price_discount' => $prd['fields']['price_discount'],
+                'discount_percent' => $prd['fields']['discount_percent'],
+                'duration' => count($prd['fields']['itineraries']),
+                'airlines_icon' => $prd['fields']['airlinesIcon'][0]['url'],
+                'airlines_name' => $prd['fields']['airlinesName'][0],
+                'extra_data' => ['itins_id' => $prd['fields']['itineraries']],
             ];
-
-            $itinsSimple[] = $transitin;
+            $simpleprd[] = $transprd;
         }
-        $itins = $itinsSimple;
-
-        $products = array_map(function ($products) use ($itins) {
-            // Counting duration
-            $duration = count($products['fields']['itineraries']);
-
-            // Mapping itinerary
-            $itineraryIds = $products['fields']['itineraries'];
-            $itinsMapped = [];
-            foreach ($itineraryIds as $itineraryId) {
-                $record = collect($itins)->firstWhere('id', $itineraryId);
-                if ($record) {
-                    $itinsMapped[] = $record;
-                }
-            }
-
-            $priceNormal = number_format($products['fields']['price_normal'], 0, ',', '.');
-            $priceDiscount = isset($products['fields']['price_discount']) ? number_format($products['fields']['price_discount'], 0, ',', '.') : null;
-            // $testdulukale = $itins['meal'];
-
-            return [
-                'id' => $products['id'],
-                'slug' => $products['fields']['slug'],
-                'name' => $products['fields']['name'],
-                'thumbnail' => $products['fields']['thumbnail'][0]['url'],
-                'price_normal' => $priceNormal,
-                'price_discount' => $priceDiscount,
-                'duration' => $duration,
-                'itineraries' => $itinsMapped,
-            ];
-        }, $products);
+        $products = $simpleprd;
 
         return response($products);
     }

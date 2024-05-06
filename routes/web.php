@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => '/'], function () {
     Route::get('/', [HomeController::class, 'index']);
+    Route::get('/product', [HomeController::class, 'product']);
 
-    Route::get('/product/{id}', [ExperienceController::class, 'show'])->name('experience.show');
+    // Route::get('/product/{id}', [ExperienceController::class, 'show'])->name('experience.show');
 });
