@@ -52,7 +52,7 @@ class ProductsController extends Controller
         }
         $itins = $itinsSimple;
 
-        $products = array_map(function ($products) use ($itins) {
+        $yakali = array_map(function ($products) use ($itins) {
             // Counting duration
             $duration = count($products['fields']['itineraries']);
 
@@ -82,7 +82,7 @@ class ProductsController extends Controller
             ];
 
             $productId = $products['id'];
-        }, $products);
+        }, $yakali);
 
         return response($products);
     }

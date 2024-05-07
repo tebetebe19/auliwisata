@@ -18,6 +18,8 @@ class ProductController extends Controller
         $responseProducts = Http::withHeaders(['Authorization' => 'Bearer '.$apiKey])
             ->get('https://api.airtable.com/v0/'.$baseId.'/'.$tableIDproducts.'?filterByFormula=SEARCH(%22'.$slug.'%22%2C+%7Bslug%7D)');
         $products = json_decode($responseProducts, true)['records'];
+
+        // return response($products);
         if ($products == null) {
             return [
                 'code' => '204',
@@ -36,11 +38,12 @@ class ProductController extends Controller
                 'duration' => count($prd['fields']['itineraries']),
                 'airlines_icon' => $prd['fields']['airlinesIcon'][0]['url'],
                 'airlines_name' => $prd['fields']['airlinesName'][0],
-                'extra_data' => ['itins_id' => $prd['fields']['itineraries']],
+                'itinerary' => $prd['fields']['itineraries'],
             ];
             $simpleprd[] = $transprd;
         }
         $products = $simpleprd;
+
         // return response($products);
         // Fetch and Transform Product End
 
@@ -92,6 +95,30 @@ class ProductController extends Controller
         $itins = $simpleitins;
         // Fetch and Transform Itineraries End
 
-        return response($itins);
+        $products = array_map(function ($products) use ($itins) {
+            $itinsMapped = [];
+            foreach ($products['itinerary'] as $prdItins) {
+                $record = collect($itins)->firstWhere('id', $prdItins);
+                if ($record) {
+                    $itinsMapped[] = $record;
+                }
+            }
+
+            return [
+                'id' => $products['id'],
+                'slug' => $products['slug'],
+                'thumbnail' => $products['thumbnail'],
+                'name' => $products['name'],
+                'price_normal' => $products['price_normal'],
+                'price_discount' => $products['price_discount'],
+                'discount_percent' => $products['discount_percent'],
+                'duration' => $products['duration'],
+                'airlines_icon' => $products['airlines_icon'],
+                'airlines_name' => $products['airlines_name'],
+                'itinerary' => $itinsMapped,
+            ];
+        }, $products);
+
+        return response($products);
     }
 }

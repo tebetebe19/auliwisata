@@ -31,7 +31,7 @@ class ProductsController extends Controller
                 'duration' => count($prd['fields']['itineraries']),
                 'airlines_icon' => $prd['fields']['airlinesIcon'][0]['url'],
                 'airlines_name' => $prd['fields']['airlinesName'][0],
-                'extra_data' => ['itins_id' => $prd['fields']['itineraries']],
+                'itinerary' => $prd['fields']['itineraries'],
             ];
             $simpleprd[] = $transprd;
         }
