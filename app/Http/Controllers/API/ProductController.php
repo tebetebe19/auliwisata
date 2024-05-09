@@ -32,6 +32,9 @@ class ProductController extends Controller
                 'slug' => $prd['fields']['slug'],
                 'thumbnail' => $prd['fields']['thumbnail'][0]['thumbnails']['full']['url'],
                 'name' => $prd['fields']['name'],
+                'description' => $prd['fields']['description'],
+                'includes' => $prd['fields']['includes'],
+                'excludes' => $prd['fields']['excludes'],
                 'price_normal' => $prd['fields']['price_normal'],
                 'price_discount' => $prd['fields']['price_discount'],
                 'discount_percent' => $prd['fields']['discount_percent'],
@@ -54,9 +57,10 @@ class ProductController extends Controller
         $itins = json_decode($respItins, true)['records'];
 
         // return response($itins);
+
         foreach ($itins as $itin) {
             // Restructure Flight Schedule Start
-            $flight = [
+            $flightData = [
                 'airlinesCode' => isset($itin['fields']['airlinesCode']) ? $itin['fields']['airlinesCode'] : [],
                 'airlinesName' => isset($itin['fields']['airlinesName']) ? $itin['fields']['airlinesName'] : [],
                 'airportDepartureCode' => isset($itin['fields']['airportDepartureCode']) ? $itin['fields']['airportDepartureCode'] : [],
@@ -66,16 +70,16 @@ class ProductController extends Controller
             ];
             $flights = [];
 
-            $flightCount = count($flight['airlinesCode']); // Counting Jumlah Flight by Code
-            if ($flightCount != null) {
+            $flightCount = count($flightData['airlinesCode']); // Counting Jumlah Flight by Code
+            if ($flightCount !== 0) {
                 for ($i = 0; $i < $flightCount; ++$i) {
                     $flight = [
-                        'airlinesCode' => $flight['airlinesCode'][$i],
-                        'airlinesName' => $flight['airlinesName'][$i],
-                        'airportDepartureCode' => $flight['airportDepartureCode'][$i],
-                        'airportDepartureCity' => $flight['airportDepartureCity'][$i],
-                        'airportArrivalCode' => $flight['airportArrivalCode'][$i],
-                        'airportArrivalCity' => $flight['airportArrivalCity'][$i],
+                        'airlinesCode' => isset($flightData['airlinesCode'][$i]) ? $flightData['airlinesCode'][$i] : '',
+                        'airlinesName' => isset($flightData['airlinesName'][$i]) ? $flightData['airlinesName'][$i] : '',
+                        'airportDepartureCode' => isset($flightData['airportDepartureCode'][$i]) ? $flightData['airportDepartureCode'][$i] : '',
+                        'airportDepartureCity' => isset($flightData['airportDepartureCity'][$i]) ? $flightData['airportDepartureCity'][$i] : '',
+                        'airportArrivalCode' => isset($flightData['airportArrivalCode'][$i]) ? $flightData['airportArrivalCode'][$i] : '',
+                        'airportArrivalCity' => isset($flightData['airportArrivalCity'][$i]) ? $flightData['airportArrivalCity'][$i] : '',
                     ];
 
                     $flights[] = $flight;
@@ -109,6 +113,9 @@ class ProductController extends Controller
                 'slug' => $products['slug'],
                 'thumbnail' => $products['thumbnail'],
                 'name' => $products['name'],
+                'description' => $products['description'],
+                'includes' => $products['includes'],
+                'excludes' => $products['excludes'],
                 'price_normal' => $products['price_normal'],
                 'price_discount' => $products['price_discount'],
                 'discount_percent' => $products['discount_percent'],

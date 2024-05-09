@@ -7,23 +7,23 @@ use Illuminate\Support\Facades\Http;
 
 class HomeController extends Controller
 {
-    public function index($id)
+    public function index()
     {
         $products = Http::get('https://local-auliwisata.tubaguskresnabayu.site/api/v1/products');
         $products = json_decode($products, true);
 
-        // dd($products);
+        return response($products);
 
         return view('visitor-page.home', compact('products'));
     }
 
-    public function product()
+    public function product($slug = null)
     {
-        $products = Http::get('https://local-auliwisata.tubaguskresnabayu.site/api/v1/products');
-        $products = json_decode($products, true);
+        $product = Http::get('https://local-auliwisata.tubaguskresnabayu.site/api/v1/product/'.$slug);
+        $product = json_decode($product, true);
 
-        // dd($products);
+        // return response($product);
 
-        return view('visitor-page.product');
+        // return view('visitor-page.product', compact('product'));
     }
 }

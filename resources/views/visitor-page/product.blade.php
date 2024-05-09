@@ -4,10 +4,9 @@
     <section id="product">
         <div class="container">
             <div>
-                <img src="https://images.pexels.com/photos/10205861/pexels-photo-10205861.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=1000"
-                    alt="">
+                <img src="{{ $product[0]['thumbnail'] }}" alt="">
             </div>
-            <h1 class="header-title">Title</h1>
+            <h1 class="header-title">{{ $product[0]['name'] }}</h1>
             <p class="sub-title-product">Lorem ipsum dolor, sit amet consectetur adipisicing elit.
                 Molestias dolores amet excepturi
                 dolor ipsam
@@ -17,13 +16,15 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-2 duration text-center">
-                            X
+                            {{ $product[0]['duration'] }} <span>days</span>
                         </div>
                         <div class="col-4 flight text-center">
-                            [ICON] <span>Emirates</span>
+                            <img src="{{ $product[0]['airlines_icon'] }}" alt=""
+                                style="width:28px; height:28px; object-fit:cover; margin-bottom: 0px">
+                            <span>{{ $product[0]['airlines_name'] }}</span>
                         </div>
                         <div class="col-6 price text-end">
-                            Rp 20.000.000<span>/pax</span>
+                            {{ $product[0]['price_discount'] != null ? $product[0]['price_discount'] : $product['price_normal'] }}<span>/pax</span>
                         </div>
                     </div>
                 </div>
@@ -31,38 +32,46 @@
             <div class="itineraries mb-3">
                 <h2>Jadwal Perjalanan</h2>
                 <div class="accordion" id="accordionExample">
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" id="headingOne">
-                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                Accordion Item #1
-                            </button>
-                        </h2>
-                        <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne"
-                            data-bs-parent="#accordionExample">
-                            <div class="accordion-body">
-                                <div class="deskripsi">
-                                    <b>Deskripsi</b> <br>
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam labore adipisci quasi
-                                    reprehenderit quisquam odio! Tempore commodi maiores a asperiores!
-                                </div>
-                                <div class="meal">
-                                    <b>Jadwal Makan</b> <br>
-                                    <span class="badge bg-success">Sarapan</span>
-                                    <span class="badge bg-success">Makan Siang</span>
-                                    <span class="badge bg-success">Makan Malam</span>
-                                    <span class="badge bg-light text-dark">Tidak Ada</span>
-                                </div>
-                                <div class="flight">
-                                    <b>Penerbangan</b>
-                                    <div>[ICON] Emirates :
-                                        <i class="fas fa-plane-departure"></i>Jakarta (CGK) ->
-                                        <i class="fas fa-plane-arrival"></i>Jeddah (JED)
+                    @foreach ($product[0]['itinerary'] as $itin)
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingOne">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#{{ $itin['id'] }}" aria-expanded="true"
+                                    aria-controls="{{ $itin['id'] }}">
+                                    {{ $itin['title'] }}
+                                </button>
+                            </h2>
+                            <div id="{{ $itin['id'] }}" class="accordion-collapse collapse" aria-labelledby="headingOne"
+                                data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    <div class="deskripsi">
+                                        <b>Deskripsi</b> <br>
+                                        {{ $itin['description'] }}
+                                    </div>
+                                    <div class="meal">
+                                        <b>Jadwal Makan</b> <br>
+                                        @foreach ($itin['meal'] as $meal)
+                                            {!! $meal = null
+                                                ? '<span class="badge bg-light text-dark">Tidak Ada</span>'
+                                                : '<span class="badge bg-success">' . $meal . '</span>' !!}
+                                        @endforeach
+                                    </div>
+                                    <div class="flight">
+                                        <b>Penerbangan</b>
+                                        @foreach ($itin['flight'] as $flight)
+                                            <div>
+                                                [ICON] {{ $flight['airlinesName'] }}({{ $flight['airlinesCode'] }}) :
+                                                <i class="fas fa-plane-departure"></i>{{ $flight['airportDepartureCity'] }}
+                                                ({{ $flight['airportDepartureCode'] }}) ->
+                                                <i class="fas fa-plane-arrival"></i>{{ $flight['airportArrivalCity'] }}
+                                                ({{ $flight['airportArrivalCode'] }})
+                                            </div>
+                                        @endforeach
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    @endforeach
                 </div>
             </div>
         </div>

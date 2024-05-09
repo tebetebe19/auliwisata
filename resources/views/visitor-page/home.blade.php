@@ -172,21 +172,7 @@
                     <div class="col-lg-4">
                         <div class="auli_card">
                             <div id="feat-1" class="carousel slide" data-ride="carousel" style="">
-                                <div class="carousel-inner">
-                                    <div class="carousel-item active">
-                                        <img src="{{ $item['thumbnail'] }}">
-                                    </div>
-                                </div>
-                                <button class="carousel-control-prev" type="button" data-bs-target="#feat-1"
-                                    data-bs-slide="prev">
-                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                    <span class="visually-hidden">Previous</span>
-                                </button>
-                                <button class="carousel-control-next" type="button" data-bs-target="#feat-1"
-                                    data-bs-slide="next">
-                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                    <span class="visually-hidden">Next</span>
-                                </button>
+                                <img src="{{ $item['thumbnail'] }}">
                             </div>
                             <div class="overlay">
                                 <div class="discount">
@@ -195,12 +181,6 @@
                             </div>
                             <div class="info" style="">
                                 <h5 class="name">{{ $item['name'] }}</h5>
-                                {{-- <a href="https://goo.gl/maps/QTJNvG4JwVVrGvsh8" target="blank_">
-                                    <div class="location">
-                                        <i class="fas fa-map-marker-alt"></i>
-                                        <p>Gedung Tusuk Sate</p>
-                                    </div>
-                                </a> --}}
                                 <div class="price">
                                     {!! $item['price_discount'] == 0
                                         ? '<p>Mulai dari <span>Rp' . $item['price_normal'] . '</span></p>'
@@ -215,11 +195,11 @@
                                         </div>
                                         <div class="ppl">
                                             <i class="fas fa-plane"></i>
-                                            <p>{{ $item['itineraries'][0]['airlines'][0] }}</p>
+                                            <p>{{ $item['airlines_name'] }}</p>
                                         </div>
                                     </div>
                                     <div class="button">
-                                        <a href="" style="color: black">
+                                        <a href="/product/{{ $item['slug'] }}" target="blank" style="color: black">
                                             Detail >
                                         </a>
                                     </div>
