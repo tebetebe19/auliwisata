@@ -61,6 +61,7 @@ class ProductController extends Controller
         foreach ($itins as $itin) {
             // Restructure Flight Schedule Start
             $flightData = [
+                'airlinesIcon' => isset($itin['fields']['airlinesIcon']) ? $itin['fields']['airlinesIcon'] : [],
                 'airlinesCode' => isset($itin['fields']['airlinesCode']) ? $itin['fields']['airlinesCode'] : [],
                 'airlinesName' => isset($itin['fields']['airlinesName']) ? $itin['fields']['airlinesName'] : [],
                 'airportDepartureCode' => isset($itin['fields']['airportDepartureCode']) ? $itin['fields']['airportDepartureCode'] : [],
@@ -74,6 +75,7 @@ class ProductController extends Controller
             if ($flightCount !== 0) {
                 for ($i = 0; $i < $flightCount; ++$i) {
                     $flight = [
+                        'airlinesIcon' => isset($flightData['airlinesIcon'][$i]['url']) ? $flightData['airlinesIcon'][$i]['url'] : '',
                         'airlinesCode' => isset($flightData['airlinesCode'][$i]) ? $flightData['airlinesCode'][$i] : '',
                         'airlinesName' => isset($flightData['airlinesName'][$i]) ? $flightData['airlinesName'][$i] : '',
                         'airportDepartureCode' => isset($flightData['airportDepartureCode'][$i]) ? $flightData['airportDepartureCode'][$i] : '',
@@ -99,6 +101,7 @@ class ProductController extends Controller
         $itins = $simpleitins;
         // Fetch and Transform Itineraries End
 
+        // Mapping Products and Itin Start
         $products = array_map(function ($products) use ($itins) {
             $itinsMapped = [];
             foreach ($products['itinerary'] as $prdItins) {
@@ -125,6 +128,7 @@ class ProductController extends Controller
                 'itinerary' => $itinsMapped,
             ];
         }, $products);
+        // Mapping Products and Itin End
 
         return response($products);
     }

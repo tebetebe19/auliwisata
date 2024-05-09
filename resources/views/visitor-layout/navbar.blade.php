@@ -1,7 +1,7 @@
 <section id="navbar">
     <nav class="navbar container fixed-top navbar-expand-lg">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="/">
                 <img src="{{ asset('assets/img/logo.png') }}" alt="" style="width: 150px">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"

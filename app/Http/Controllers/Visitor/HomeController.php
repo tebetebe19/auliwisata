@@ -12,7 +12,7 @@ class HomeController extends Controller
         $products = Http::get('https://local-auliwisata.tubaguskresnabayu.site/api/v1/products');
         $products = json_decode($products, true);
 
-        return response($products);
+        // return response($products);
 
         return view('visitor-page.home', compact('products'));
     }
@@ -24,6 +24,6 @@ class HomeController extends Controller
 
         // return response($product);
 
-        // return view('visitor-page.product', compact('product'));
+        return view('visitor-page.product', compact('product'));
     }
 }
